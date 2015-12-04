@@ -1,3 +1,9 @@
+## Assets
+*.jpg
+*.png
+*.wav
+*.mp3
+
 ## Java
 
 *.class
