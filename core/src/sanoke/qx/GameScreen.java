@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.Array;
 
 public class GameScreen implements Screen {
     final Sanoke game;
@@ -16,7 +17,8 @@ public class GameScreen implements Screen {
     private Texture blueImage;
     private Texture greenImage;
     private Texture background;
-    
+    private Texture unitTexture;
+    private Texture[] textures;
     public Music music;
     
     private Board board;
@@ -27,10 +29,12 @@ public class GameScreen implements Screen {
         orangeImage = new Texture(Gdx.files.internal("orange.png"));
         blueImage = new Texture(Gdx.files.internal("blue.png"));
         greenImage = new Texture(Gdx.files.internal("green.png"));
+        textures = new Texture[]{redImage, orangeImage, blueImage, greenImage};
         music = Gdx.audio.newMusic(Gdx.files.internal("skypirate.mp3"));
         music.setLooping(true);
         music.setVolume(0.5f);
         music.play();
+        board = new Board();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, game.HEIGHT, game.WIDTH);
         
@@ -46,9 +50,19 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         game.batch.begin();
-        game.batch.draw(background, 0, 0);;
+        game.batch.draw(background, 0, 0);
+        drawUnits();
         game.batch.end();
 
+    }
+
+    private void drawUnits() {
+        Array<Unit> col = board.getCol(0);
+        for (int i = 0; i < 1; i++) {
+            Unit unit = col.get(i);
+            unitTexture = textures[unit.getType()];
+            game.batch.draw(unitTexture, 0, 0);
+        }
     }
 
     @Override

@@ -10,13 +10,19 @@ public class Board {
     private Array<Array<Unit>> columns;
     
     public Board() {
+        columns = new Array<Array<Unit>>(NUM_COLS);
         Array<Unit> col = new Array<Unit>(NUM_ROWS);
-        col.add(spawnUnit(1, 1));
+        col.add(spawnUnit(0, 0));
         columns.add(col);
     }
     
     //spawns a random Unit at row, col
     public Unit spawnUnit(int row, int col) {
-        return new Unit(row, col, MathUtils.random(1, 4));
+        return new Unit(row, col, MathUtils.random(3));
+    }
+    
+    public Array<Unit> getCol(int col) {
+        assert(col >= 0 && col < NUM_COLS);
+        return columns.get(col);
     }
 }

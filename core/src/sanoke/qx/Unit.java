@@ -4,10 +4,10 @@ public class Unit {
 
     /*
      * Not sure if will need these here or not
-     * private static final int RED = 1; 
-     * private static final int ORANGE = 2;
-     * private static final int GREEN = 3; 
-     * private static final int BLUE = 4;
+     * private static final int RED = 0; 
+     * private static final int ORANGE = 1;
+     * private static final int GREEN = 2; 
+     * private static final int BLUE = 3;
      */
     
     private int row;
