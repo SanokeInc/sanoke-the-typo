@@ -5,18 +5,19 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Sanoke extends Game {
-    public SpriteBatch spriteBatch;
+    public SpriteBatch batch;
     public BitmapFont font;
 	
     public final int HEIGHT = 800;
     public final int WIDTH = 1000;
     
     public void create() {
-        spriteBatch = new SpriteBatch();
+        batch = new SpriteBatch();
         // default Arial
         font = new BitmapFont();
         //TODO main menu
         //this.setScreen(new MainMenuScreen(this));
+        this.setScreen(new GameScreen(this));
     }
 
     public void render() {
@@ -24,7 +25,7 @@ public class Sanoke extends Game {
     }
 
     public void dispose() {
-        spriteBatch.dispose();
+        batch.dispose();
         font.dispose();
     }
 }
