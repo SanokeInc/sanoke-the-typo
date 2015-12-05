@@ -8,14 +8,15 @@ public class Sanoke extends Game {
     public SpriteBatch spriteBatch;
     public BitmapFont font;
 	
-    public final int HEIGHT = 1000;
+    public final int HEIGHT = 800;
     public final int WIDTH = 1000;
     
     public void create() {
         spriteBatch = new SpriteBatch();
         // default Arial
         font = new BitmapFont();
-        this.setScreen(new MainMenuScreen(this));
+        //TODO main menu
+        //this.setScreen(new MainMenuScreen(this));
     }
 
     public void render() {
