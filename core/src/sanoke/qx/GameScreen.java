@@ -21,6 +21,9 @@ public class GameScreen implements Screen {
     private Texture[] textures;
     public Music music;
     
+    public static final int BOARD_Y_OFFSET = 100;
+    public static final int BOARD_X_OFFSET = 300;
+    
     private Board board;
     public GameScreen(final Sanoke game) {
         background = new Texture(Gdx.files.internal("bamboo.jpg"));
@@ -33,7 +36,7 @@ public class GameScreen implements Screen {
         music = Gdx.audio.newMusic(Gdx.files.internal("skypirate.mp3"));
         music.setLooping(true);
         music.setVolume(0.5f);
-        music.play();
+        //music.play();
         board = new Board();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, game.HEIGHT, game.WIDTH);
@@ -57,11 +60,16 @@ public class GameScreen implements Screen {
     }
 
     private void drawUnits() {
-        Array<Unit> col = board.getCol(0);
-        for (int i = 0; i < 1; i++) {
-            Unit unit = col.get(i);
-            unitTexture = textures[unit.getType()];
-            game.batch.draw(unitTexture, 0, 0);
+        for (int i = 0; i < board.NUM_COLS; i++) {
+            Array<Unit> col = board.getCol(i);
+            for (int j = 0; j < board.NUM_ROWS; j++) {
+                Unit unit = col.get(j);
+                unitTexture = textures[unit.getType()];
+                game.batch
+                        .draw(unitTexture,
+                                j * unit.UNIT_WIDTH + BOARD_X_OFFSET, i
+                                        * unit.UNIT_LENGTH + BOARD_Y_OFFSET);
+            }
         }
     }
 

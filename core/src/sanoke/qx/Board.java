@@ -4,16 +4,21 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 
 public class Board {
-    private static final int NUM_ROWS = 8;
-    private static final int NUM_COLS = 8;
+    public final int NUM_ROWS = 8;
+    public final int NUM_COLS = 8;
     
     private Array<Array<Unit>> columns;
     
     public Board() {
         columns = new Array<Array<Unit>>(NUM_COLS);
-        Array<Unit> col = new Array<Unit>(NUM_ROWS);
-        col.add(spawnUnit(0, 0));
-        columns.add(col);
+        // initialize the units
+        for (int i = 0; i < NUM_COLS; i++) {
+            Array<Unit> col = new Array<Unit>(NUM_ROWS);
+            for (int j = 0; j < NUM_ROWS; j++) {
+                col.add(spawnUnit(j, 0));
+            }
+            columns.add(col);
+        }
     }
     
     //spawns a random Unit at row, col

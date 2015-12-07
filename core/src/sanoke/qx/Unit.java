@@ -9,6 +9,8 @@ public class Unit {
      * private static final int GREEN = 2; 
      * private static final int BLUE = 3;
      */
+    public final int UNIT_LENGTH = 64;
+    public final int UNIT_WIDTH = 64;
     
     private int row;
     private int col;
