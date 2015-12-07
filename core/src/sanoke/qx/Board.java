@@ -15,7 +15,7 @@ public class Board {
         for (int i = 0; i < NUM_COLS; i++) {
             Array<Unit> col = new Array<Unit>(NUM_ROWS);
             for (int j = 0; j < NUM_ROWS; j++) {
-                col.add(spawnUnit(j, 0));
+                col.add(spawnUnit(j, i));
             }
             columns.add(col);
         }

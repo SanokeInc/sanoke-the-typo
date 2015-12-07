@@ -29,6 +29,9 @@ public class GameScreen implements Screen {
     private TextureRegion[] selectedTextures;
     public Music music;
     
+    boolean isSelected;
+    Unit selectedUnit;
+    
     public static final int UNIT_HEIGHT = 64;
     public static final int UNIT_WIDTH = 64;
     public static final int BOARD_Y_OFFSET = 100;
@@ -71,7 +74,7 @@ public class GameScreen implements Screen {
         board = new Board();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, game.HEIGHT, game.WIDTH);
-
+        isSelected = false;
     }
     
     @Override
@@ -103,7 +106,31 @@ public class GameScreen implements Screen {
 
     private void highlightAndSwapUnit(int xPos, int yPos) {
         if (xPos < board.NUM_COLS && yPos < board.NUM_ROWS) {
-            board.getCol(yPos).get(xPos).toggleSelected();
+            Unit unit = board.getCol(yPos).get(xPos);
+            unit.toggleSelected();
+            if (unit.isSelected()) {
+                if (isSelected) {
+                    swapUnit(unit);
+                } else {
+                    isSelected = true;
+                    selectedUnit = unit;
+                }
+            }
+        }
+    }
+
+    // swaps units if they are neighbours, else de-select old unit
+    private void swapUnit(Unit unit) {
+        if (selectedUnit.isNeighbour(unit)) {
+            int unitType = unit.getType();
+            unit.setType(selectedUnit.getType());
+            selectedUnit.setType(unitType);
+            unit.toggleSelected();
+            selectedUnit.toggleSelected();
+            isSelected = false;
+        } else {
+            selectedUnit.toggleSelected();
+            selectedUnit = unit;
         }
     }
 

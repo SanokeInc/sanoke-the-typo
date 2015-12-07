@@ -1,5 +1,6 @@
 package sanoke.qx;
 
+
 public class Unit {
 
     /*
@@ -43,10 +44,22 @@ public class Unit {
         type = newType;
     }
     
+    public boolean isNeighbour(Unit unit) {
+        int colOffset = Math.abs((unit.getCol() - col));
+        int rowOffset = Math.abs((unit.getRow() - row));
+        if ((colOffset == 1 && rowOffset == 0)
+                || (colOffset == 0 && rowOffset == 1)) {
+            return true;
+        } else {
+            return false;
+        }
+        
+    }
     
     public boolean isSelected() {
         return isSelected;
     }
+    
     public void toggleSelected() {
         isSelected = !isSelected;
     }
