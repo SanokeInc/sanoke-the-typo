@@ -5,22 +5,26 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 
 public class GameScreen implements Screen {
     final Sanoke game;
     
     OrthographicCamera camera;
-    
-    private Texture redImage;
-    private Texture orangeImage;
-    private Texture blueImage;
-    private Texture greenImage;
+    private Texture unitsMap;
+    private TextureRegion redImage;
+    private TextureRegion orangeImage;
+    private TextureRegion blueImage;
+    private TextureRegion greenImage;
+    private TextureRegion purpleImage;
     private Texture background;
-    private Texture unitTexture;
-    private Texture[] textures;
+    private TextureRegion unitTexture;
+    private TextureRegion[] textures;
     public Music music;
     
+    public static final int UNIT_HEIGHT = 64;
+    public static final int UNIT_WIDTH = 64;
     public static final int BOARD_Y_OFFSET = 100;
     public static final int BOARD_X_OFFSET = 300;
     
@@ -28,11 +32,13 @@ public class GameScreen implements Screen {
     public GameScreen(final Sanoke game) {
         background = new Texture(Gdx.files.internal("bamboo.jpg"));
         this.game = game;
-        redImage = new Texture(Gdx.files.internal("red.png"));
-        orangeImage = new Texture(Gdx.files.internal("orange.png"));
-        blueImage = new Texture(Gdx.files.internal("blue.png"));
-        greenImage = new Texture(Gdx.files.internal("green.png"));
-        textures = new Texture[]{redImage, orangeImage, blueImage, greenImage};
+        unitsMap = new Texture(Gdx.files.internal("units.png"));
+        redImage = new TextureRegion(unitsMap, UNIT_WIDTH * 1, 0, UNIT_WIDTH, UNIT_HEIGHT);
+        orangeImage = new TextureRegion(unitsMap, UNIT_WIDTH * 2, 0, UNIT_WIDTH, UNIT_HEIGHT);
+        blueImage = new TextureRegion(unitsMap, UNIT_WIDTH * 3, 0, UNIT_WIDTH, UNIT_HEIGHT);
+        greenImage = new TextureRegion(unitsMap, UNIT_WIDTH * 4, 0, UNIT_WIDTH, UNIT_HEIGHT);
+        purpleImage = new TextureRegion(unitsMap, UNIT_WIDTH * 5, 0, UNIT_WIDTH, UNIT_HEIGHT);
+        textures = new TextureRegion[]{redImage, orangeImage, blueImage, greenImage, purpleImage};
         music = Gdx.audio.newMusic(Gdx.files.internal("skypirate.mp3"));
         music.setLooping(true);
         music.setVolume(0.5f);
