@@ -17,6 +17,7 @@ public class Unit {
     private int col;
     private int type;
     
+    private boolean isSelected;
     private boolean isVertMatch;
     private boolean isHoriMatch;
     
@@ -36,6 +37,18 @@ public class Unit {
 
     public int getType() {
         return type;
+    }
+    
+    public void setType(int newType) {
+        type = newType;
+    }
+    
+    
+    public boolean isSelected() {
+        return isSelected;
+    }
+    public void toggleSelected() {
+        isSelected = !isSelected;
     }
     
     public void setVertMatch() {

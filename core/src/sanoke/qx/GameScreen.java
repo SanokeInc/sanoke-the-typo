@@ -12,15 +12,21 @@ public class GameScreen implements Screen {
     final Sanoke game;
     
     OrthographicCamera camera;
+    private Texture background;
     private Texture unitsMap;
     private TextureRegion redImage;
     private TextureRegion orangeImage;
     private TextureRegion blueImage;
     private TextureRegion greenImage;
     private TextureRegion purpleImage;
-    private Texture background;
     private TextureRegion unitTexture;
-    private TextureRegion[] textures;
+    private TextureRegion redSelectImage;
+    private TextureRegion orangeSelectImage;
+    private TextureRegion blueSelectImage;
+    private TextureRegion greenSelectImage;
+    private TextureRegion purpleSelectImage;
+    private TextureRegion[] unselectedTextures;
+    private TextureRegion[] selectedTextures;
     public Music music;
     
     public static final int UNIT_HEIGHT = 64;
@@ -33,12 +39,31 @@ public class GameScreen implements Screen {
         background = new Texture(Gdx.files.internal("bamboo.jpg"));
         this.game = game;
         unitsMap = new Texture(Gdx.files.internal("units.png"));
-        redImage = new TextureRegion(unitsMap, UNIT_WIDTH * 1, 0, UNIT_WIDTH, UNIT_HEIGHT);
-        orangeImage = new TextureRegion(unitsMap, UNIT_WIDTH * 2, 0, UNIT_WIDTH, UNIT_HEIGHT);
-        blueImage = new TextureRegion(unitsMap, UNIT_WIDTH * 3, 0, UNIT_WIDTH, UNIT_HEIGHT);
-        greenImage = new TextureRegion(unitsMap, UNIT_WIDTH * 4, 0, UNIT_WIDTH, UNIT_HEIGHT);
-        purpleImage = new TextureRegion(unitsMap, UNIT_WIDTH * 5, 0, UNIT_WIDTH, UNIT_HEIGHT);
-        textures = new TextureRegion[]{redImage, orangeImage, blueImage, greenImage, purpleImage};
+        redImage = new TextureRegion(unitsMap, UNIT_WIDTH * 1, 0, UNIT_WIDTH,
+                UNIT_HEIGHT);
+        orangeImage = new TextureRegion(unitsMap, UNIT_WIDTH * 2, 0,
+                UNIT_WIDTH, UNIT_HEIGHT);
+        blueImage = new TextureRegion(unitsMap, UNIT_WIDTH * 3, 0, UNIT_WIDTH,
+                UNIT_HEIGHT);
+        greenImage = new TextureRegion(unitsMap, UNIT_WIDTH * 4, 0, UNIT_WIDTH,
+                UNIT_HEIGHT);
+        purpleImage = new TextureRegion(unitsMap, UNIT_WIDTH * 5, 0,
+                UNIT_WIDTH, UNIT_HEIGHT);
+        unselectedTextures = new TextureRegion[] { redImage, orangeImage,
+                blueImage, greenImage, purpleImage };
+        redSelectImage = new TextureRegion(unitsMap, UNIT_WIDTH * 1,
+                UNIT_HEIGHT, UNIT_WIDTH, UNIT_HEIGHT);
+        orangeSelectImage = new TextureRegion(unitsMap, UNIT_WIDTH * 2,
+                UNIT_HEIGHT, UNIT_WIDTH, UNIT_HEIGHT);
+        blueSelectImage = new TextureRegion(unitsMap, UNIT_WIDTH * 3,
+                UNIT_HEIGHT, UNIT_WIDTH, UNIT_HEIGHT);
+        greenSelectImage = new TextureRegion(unitsMap, UNIT_WIDTH * 4,
+                UNIT_HEIGHT, UNIT_WIDTH, UNIT_HEIGHT);
+        purpleSelectImage = new TextureRegion(unitsMap, UNIT_WIDTH * 5,
+                UNIT_HEIGHT, UNIT_WIDTH, UNIT_HEIGHT);
+        selectedTextures = new TextureRegion[] { redSelectImage,
+                orangeSelectImage, blueSelectImage, greenSelectImage,
+                purpleSelectImage };
         music = Gdx.audio.newMusic(Gdx.files.internal("skypirate.mp3"));
         music.setLooping(true);
         music.setVolume(0.5f);
@@ -46,7 +71,6 @@ public class GameScreen implements Screen {
         board = new Board();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, game.HEIGHT, game.WIDTH);
-        
 
     }
     
@@ -62,7 +86,25 @@ public class GameScreen implements Screen {
         game.batch.draw(background, 0, 0);
         drawUnits();
         game.batch.end();
+        processInput();
+    }
 
+    private void processInput() {
+        if (Gdx.input.justTouched()) {
+            float xPos = (Gdx.input.getX() - BOARD_X_OFFSET);
+            float yPos = (game.HEIGHT - BOARD_Y_OFFSET - Gdx.input.getY());
+            // lazy validation for positive numbers
+            if (xPos >= 0 && yPos >= 0) {
+                highlightAndSwapUnit((int)xPos / UNIT_WIDTH, (int)yPos / UNIT_HEIGHT);
+            }
+            
+        }
+    }
+
+    private void highlightAndSwapUnit(int xPos, int yPos) {
+        if (xPos < board.NUM_COLS && yPos < board.NUM_ROWS) {
+            board.getCol(yPos).get(xPos).toggleSelected();
+        }
     }
 
     private void drawUnits() {
@@ -70,7 +112,11 @@ public class GameScreen implements Screen {
             Array<Unit> col = board.getCol(i);
             for (int j = 0; j < board.NUM_ROWS; j++) {
                 Unit unit = col.get(j);
-                unitTexture = textures[unit.getType()];
+                if (unit.isSelected()) {
+                    unitTexture = selectedTextures[unit.getType()];
+                } else {
+                    unitTexture = unselectedTextures[unit.getType()];
+                }
                 game.batch
                         .draw(unitTexture,
                                 j * unit.UNIT_WIDTH + BOARD_X_OFFSET, i
