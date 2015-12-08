@@ -98,7 +98,7 @@ public class GameScreen implements Screen {
 
     private void updateBoard() {
         board.updateBoard();
-        
+        // System.out.println("Current Points = " + board.getPoints());
     }
 
     private void processInput() {
@@ -141,6 +141,7 @@ public class GameScreen implements Screen {
             unit.toggleSelected();
             selectedUnit.toggleSelected();
             isReadyToSwap = false;
+            board.moveAttempt();
         } else {
             selectedUnit.toggleSelected();
             selectedUnit = unit;
