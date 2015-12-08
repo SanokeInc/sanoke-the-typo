@@ -25,6 +25,7 @@ public class Board {
             }
             columns.add(col);
         }
+        updateBoard();
     }
     
     //spawns a random Unit at row, col
@@ -42,16 +43,31 @@ public class Board {
     }
     
     public void checkMatch(Unit unit) {
-        boolean isHori = isHoriMatch(unit);
+    	isHoriMatch(unit);
+    	isVertMatch(unit);
+        /*boolean isHori = isHoriMatch(unit);
         if (isVertMatch(unit) || isHori) {
             //matchingUnits.add(unit);
             clearSound.play();
             unit.setHoriMatch(false);
             unit.setVertMatch(false);
             unit.setType(0);
-        }
+        }*/
     }
     
+    public void removeMatches() {
+    	for (int i = 0; i < NUM_COLS; i++) {
+            for (int j = 0; j < NUM_ROWS; j++) {
+            	Unit currentUnit = getUnit(j, i);
+            	if (currentUnit.isVertMatch() || currentUnit.isHoriMatch()) {
+            		 clearSound.play();
+            		 currentUnit.setHoriMatch(false);
+            		 currentUnit.setVertMatch(false);
+            		 currentUnit.setType(0);
+            	}         
+            }
+        }
+    }
     
     public void updateBoard() {
         for (int i = 0; i < NUM_COLS; i++) {
@@ -60,6 +76,7 @@ public class Board {
                 checkMatch(col.get(j));
             }
         }
+        removeMatches();
     }
     public boolean isVertMatch(Unit unit) {
         if (unit.isVertMatch()) {
