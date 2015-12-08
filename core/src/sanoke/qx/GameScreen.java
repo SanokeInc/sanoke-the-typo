@@ -116,7 +116,7 @@ public class GameScreen implements Screen {
 
     private void highlightAndSwapUnit(int xPos, int yPos) {
         if (xPos < board.NUM_COLS && yPos < board.NUM_ROWS) {
-            Unit unit = board.getUnit(xPos, yPos);
+            Unit unit = board.getUnit(yPos, xPos);
             unit.toggleSelected();
             if (unit.isSelected()) {
                 if (isReadyToSwap) {
@@ -159,7 +159,7 @@ public class GameScreen implements Screen {
                 }
                 game.batch
                         .draw(unitTexture,
-                                j * unit.UNIT_WIDTH + BOARD_X_OFFSET, i
+                                i * unit.UNIT_WIDTH + BOARD_X_OFFSET, j
                                         * unit.UNIT_LENGTH + BOARD_Y_OFFSET);
             }
         }
