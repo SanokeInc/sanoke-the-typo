@@ -46,7 +46,7 @@ public class Board {
         if (isVertMatch(unit) || isHori) {
             //matchingUnits.add(unit);
             clearSound.play();
-            unit.isHoriMatch() = false;
+            unit.setHoriMatch(false);
             unit.setVertMatch(false);
             unit.setType(0);
         }
@@ -68,7 +68,7 @@ public class Board {
         if (unit.getRow() > 2) {
             Unit belowUnit = getUnit(unit.getRow() - 1, unit.getCol());
             if (belowUnit.isVertMatch() && unit.getType() == belowUnit.getType()) {
-                unit.setVertMatch();
+                unit.setVertMatch(true);
                 return true;
             }
         }
@@ -76,9 +76,9 @@ public class Board {
             Unit aboveUnit = getUnit(unit.getRow() + 1, unit.getCol());
             Unit aboveTwoUnit = getUnit(unit.getRow() + 2, unit.getCol());
             if (unit.getType() == aboveUnit.getType() && unit.getType() == aboveTwoUnit.getType()) {
-                unit.setVertMatch();
-                aboveUnit.setVertMatch();
-                aboveTwoUnit.setVertMatch();
+                unit.setVertMatch(true);
+                aboveUnit.setVertMatch(true);
+                aboveTwoUnit.setVertMatch(true);
                 return true;
             }
         }
@@ -92,7 +92,7 @@ public class Board {
         if (unit.getCol() > 2) {
             Unit leftUnit = getUnit(unit.getRow(), unit.getCol() - 1);
             if (leftUnit.isHoriMatch() && unit.getType() == leftUnit.getType()) {
-                unit.setHoriMatch();
+                unit.setHoriMatch(true);
                 return true;
             }
         }
@@ -100,9 +100,9 @@ public class Board {
             Unit rightUnit = getUnit(unit.getRow(), unit.getCol() + 1);
             Unit rightTwoUnit = getUnit(unit.getRow(), unit.getCol() + 2);
             if (unit.getType() == rightUnit.getType() && unit.getType() == rightTwoUnit.getType()) {
-                unit.setHoriMatch();
-                rightUnit.setHoriMatch();
-                rightTwoUnit.setHoriMatch();
+                unit.setHoriMatch(true);
+                rightUnit.setHoriMatch(true);
+                rightTwoUnit.setHoriMatch(true);
                 return true;
             }
         }
