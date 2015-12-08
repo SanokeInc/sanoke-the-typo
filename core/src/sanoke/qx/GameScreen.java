@@ -107,16 +107,16 @@ public class GameScreen implements Screen {
             float yPos = (game.HEIGHT - BOARD_Y_OFFSET - Gdx.input.getY());
             // lazy validation for positive numbers
             if (xPos >= 0 && yPos >= 0) {
-                highlightAndSwapUnit((int)xPos / UNIT_WIDTH, (int)yPos / UNIT_HEIGHT);
+                highlightAndSwapUnit((int)yPos / UNIT_HEIGHT, (int)xPos / UNIT_WIDTH);
             }
             updateBoard();
         }
         
     }
 
-    private void highlightAndSwapUnit(int xPos, int yPos) {
-        if (xPos < board.NUM_COLS && yPos < board.NUM_ROWS) {
-            Unit unit = board.getUnit(yPos, xPos);
+    private void highlightAndSwapUnit(int rowNum, int colNum) {
+        if (colNum < board.NUM_COLS && rowNum < board.NUM_ROWS) {
+            Unit unit = board.getUnit(rowNum, colNum);
             unit.toggleSelected();
             if (unit.isSelected()) {
                 if (isReadyToSwap) {
@@ -148,10 +148,10 @@ public class GameScreen implements Screen {
     }
 
     private void drawUnits() {
-        for (int i = 0; i < board.NUM_COLS; i++) {
-            Array<Unit> col = board.getCol(i);
-            for (int j = 0; j < board.NUM_ROWS; j++) {
-                Unit unit = col.get(j);
+        for (int c = 0; c < board.NUM_COLS; c++) {
+            Array<Unit> col = board.getCol(c);
+            for (int r = 0; r < board.NUM_ROWS; r++) {
+                Unit unit = col.get(r);
                 if (unit.isSelected()) {
                     unitTexture = selectedTextures[unit.getType()];
                 } else {
@@ -159,7 +159,7 @@ public class GameScreen implements Screen {
                 }
                 game.batch
                         .draw(unitTexture,
-                                i * unit.UNIT_WIDTH + BOARD_X_OFFSET, j
+                                c * unit.UNIT_WIDTH + BOARD_X_OFFSET, r
                                         * unit.UNIT_LENGTH + BOARD_Y_OFFSET);
             }
         }

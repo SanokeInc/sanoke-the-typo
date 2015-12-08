@@ -19,10 +19,10 @@ public class Board {
 		// matchingUnits = new Array<Unit>();
 		columns = new Array<Array<Unit>>(NUM_COLS);
 		// initialize the units
-		for (int i = 0; i < NUM_COLS; i++) {
+		for (int c = 0; c < NUM_COLS; c++) {
 			Array<Unit> col = new Array<Unit>(NUM_ROWS);
-			for (int j = 0; j < NUM_ROWS; j++) {
-				col.add(spawnUnit(j, i));
+			for (int r = 0; r < NUM_ROWS; r++) {
+				col.add(spawnUnit(r, c));
 			}
 			columns.add(col);
 		}
@@ -52,9 +52,9 @@ public class Board {
 
 	public boolean removeMatches() {
 		boolean hasMatch = false;
-		for (int i = 0; i < NUM_COLS; i++) {
-			for (int j = 0; j < NUM_ROWS; j++) {
-				Unit currentUnit = getUnit(j, i);
+		for (int c = 0; c < NUM_COLS; c++) {
+			for (int r = 0; r < NUM_ROWS; r++) {
+				Unit currentUnit = getUnit(r, c);
 				if (currentUnit.isVertMatch() || currentUnit.isHoriMatch()) {
 					currentUnit.setHoriMatch(false);
 					currentUnit.setVertMatch(false);
@@ -67,45 +67,46 @@ public class Board {
 	}
 
 	public void updateBoard() {
-		for (int i = 0; i < NUM_COLS; i++) {
-			Array<Unit> col = getCol(i);
-			for (int j = 0; j < NUM_ROWS; j++) {
-				checkMatch(col.get(j));
+		for (int c = 0; c < NUM_COLS; c++) {
+			Array<Unit> col = getCol(c);
+			for (int r = 0; r < NUM_ROWS; r++) {
+				checkMatch(col.get(r));
 			}
 		}
 		if (removeMatches()) {
 			clearSound.play();
 			pullDown();
-			// updateBoard();
+			updateBoard();
 		}
 	}
 
-	// Pulls tiles down and generates new tiles.
+	// Pulls tiles down and generates new units.
 	public void pullDown() {
-		for (int i = 0; i < NUM_COLS; i++) {
-			for (int j = 0; j < NUM_ROWS; j++) {
-				if (getUnit(j, i).getType() == EMPTY_SLOT) {
-					int findReplacement = getLowestBlock(i, j + 1);
-					if (findReplacement == -1) {
-						break;
+		for (int c = 0; c < NUM_COLS; c++) {
+			for (int r = 0; r < NUM_ROWS; r++) {
+				if (getUnit(r, c).getType() == EMPTY_SLOT) {
+					int replacementRow = getLowestUnit(r + 1, c);
+					if (replacementRow == -1) {
+						
 					} else {
-						columns.get(i).swap(j, findReplacement);
-						getUnit(j, i).setRow(j);
-						getUnit(findReplacement, i).setRow(findReplacement);
+						columns.get(c).swap(r, replacementRow);
+						getUnit(r, c).setRow(r);
+						getUnit(replacementRow, c).setRow(replacementRow);
 					}
 				}
 			}
 		}
 	}
-
-	private int getLowestBlock(int columnNum, int rowToCheck) {
+	
+	// returns row number of lowest unit above specified unit
+	private int getLowestUnit(int rowToCheck, int columnNum) {
 		if (rowToCheck >= NUM_ROWS) {
 			return -1; // not found
 		}
 		if (getUnit(rowToCheck, columnNum).getType() != EMPTY_SLOT) {
 			return rowToCheck;
 		}
-		return getLowestBlock(columnNum, rowToCheck + 1);
+		return getLowestUnit(rowToCheck + 1, columnNum);
 	}
 
 	public boolean isVertMatch(Unit unit) {
