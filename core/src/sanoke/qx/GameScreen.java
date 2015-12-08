@@ -97,12 +97,7 @@ public class GameScreen implements Screen {
     }
 
     private void updateBoard() {
-        for (int i = 0; i < board.NUM_COLS; i++) {
-            Array<Unit> col = board.getCol(i);
-            for (int j = 0; j < board.NUM_ROWS; j++) {
-                board.checkMatch(col.get(j));
-            }
-        }
+        board.updateBoard();
         
     }
 

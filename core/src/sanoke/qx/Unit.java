@@ -64,16 +64,16 @@ public class Unit {
         isSelected = !isSelected;
     }
     
-    public void setVertMatch() {
-        isVertMatch = true;
+    public void setVertMatch(boolean isMatch) {
+        isVertMatch = isMatch;
     }
     
     public boolean isVertMatch() {
         return isVertMatch;
     }
     
-    public void setHoriMatch() {
-        isHoriMatch = true;
+    public void setHoriMatch(boolean isMatch) {
+        isHoriMatch = isMatch;
     }
     
     public boolean isHoriMatch() {

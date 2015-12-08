@@ -1,5 +1,7 @@
 package sanoke.qx;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 
@@ -8,10 +10,12 @@ public class Board {
     public final int NUM_COLS = 8;
     
     private Array<Array<Unit>> columns;
-    private Array<Unit> matchingUnits;
+    //private Array<Unit> matchingUnits;
+    private Sound clearSound;
     
     public Board() {
-        matchingUnits = new Array<Unit>();
+        clearSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));
+        //matchingUnits = new Array<Unit>();
         columns = new Array<Array<Unit>>(NUM_COLS);
         // initialize the units
         for (int i = 0; i < NUM_COLS; i++) {
@@ -40,8 +44,21 @@ public class Board {
     public void checkMatch(Unit unit) {
         boolean isHori = isHoriMatch(unit);
         if (isVertMatch(unit) || isHori) {
-            matchingUnits.add(unit);
+            //matchingUnits.add(unit);
+            clearSound.play();
+            unit.isHoriMatch() = false;
+            unit.setVertMatch(false);
             unit.setType(0);
+        }
+    }
+    
+    
+    public void updateBoard() {
+        for (int i = 0; i < NUM_COLS; i++) {
+            Array<Unit> col = getCol(i);
+            for (int j = 0; j < NUM_ROWS; j++) {
+                checkMatch(col.get(j));
+            }
         }
     }
     public boolean isVertMatch(Unit unit) {
