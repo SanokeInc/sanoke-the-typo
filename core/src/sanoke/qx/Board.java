@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Array;
 public class Board {
     public final int NUM_ROWS = 8;
     public final int NUM_COLS = 8;
+    public static final int EMPTY_SLOT = 0;
     
     private Array<Array<Unit>> columns;
     //private Array<Unit> matchingUnits;
@@ -43,16 +44,10 @@ public class Board {
     }
     
     public void checkMatch(Unit unit) {
-    	isHoriMatch(unit);
-    	isVertMatch(unit);
-        /*boolean isHori = isHoriMatch(unit);
-        if (isVertMatch(unit) || isHori) {
-            //matchingUnits.add(unit);
-            clearSound.play();
-            unit.setHoriMatch(false);
-            unit.setVertMatch(false);
-            unit.setType(0);
-        }*/
+    	if (unit.getType() != EMPTY_SLOT) {
+	    	isHoriMatch(unit);
+	    	isVertMatch(unit);
+    	}
     }
     
     public void removeMatches() {
