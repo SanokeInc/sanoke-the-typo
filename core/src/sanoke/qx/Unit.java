@@ -68,7 +68,15 @@ public class Unit {
         isVertMatch = true;
     }
     
+    public boolean isVertMatch() {
+        return isVertMatch;
+    }
+    
     public void setHoriMatch() {
         isHoriMatch = true;
+    }
+    
+    public boolean isHoriMatch() {
+        return isHoriMatch;
     }
 }

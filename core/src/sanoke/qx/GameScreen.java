@@ -14,6 +14,7 @@ public class GameScreen implements Screen {
     OrthographicCamera camera;
     private Texture background;
     private Texture unitsMap;
+    private TextureRegion blankImage;
     private TextureRegion redImage;
     private TextureRegion orangeImage;
     private TextureRegion blueImage;
@@ -29,7 +30,7 @@ public class GameScreen implements Screen {
     private TextureRegion[] selectedTextures;
     public Music music;
     
-    boolean isSelected;
+    boolean isReadyToSwap;
     Unit selectedUnit;
     
     public static final int UNIT_HEIGHT = 64;
@@ -42,6 +43,8 @@ public class GameScreen implements Screen {
         background = new Texture(Gdx.files.internal("bamboo.jpg"));
         this.game = game;
         unitsMap = new Texture(Gdx.files.internal("units.png"));
+        blankImage = new TextureRegion(unitsMap, 0, 0, UNIT_WIDTH,
+                UNIT_HEIGHT);
         redImage = new TextureRegion(unitsMap, UNIT_WIDTH * 1, 0, UNIT_WIDTH,
                 UNIT_HEIGHT);
         orangeImage = new TextureRegion(unitsMap, UNIT_WIDTH * 2, 0,
@@ -52,7 +55,7 @@ public class GameScreen implements Screen {
                 UNIT_HEIGHT);
         purpleImage = new TextureRegion(unitsMap, UNIT_WIDTH * 5, 0,
                 UNIT_WIDTH, UNIT_HEIGHT);
-        unselectedTextures = new TextureRegion[] { redImage, orangeImage,
+        unselectedTextures = new TextureRegion[] {blankImage, redImage, orangeImage,
                 blueImage, greenImage, purpleImage };
         redSelectImage = new TextureRegion(unitsMap, UNIT_WIDTH * 1,
                 UNIT_HEIGHT, UNIT_WIDTH, UNIT_HEIGHT);
@@ -64,17 +67,17 @@ public class GameScreen implements Screen {
                 UNIT_HEIGHT, UNIT_WIDTH, UNIT_HEIGHT);
         purpleSelectImage = new TextureRegion(unitsMap, UNIT_WIDTH * 5,
                 UNIT_HEIGHT, UNIT_WIDTH, UNIT_HEIGHT);
-        selectedTextures = new TextureRegion[] { redSelectImage,
+        selectedTextures = new TextureRegion[] {blankImage, redSelectImage,
                 orangeSelectImage, blueSelectImage, greenSelectImage,
                 purpleSelectImage };
         music = Gdx.audio.newMusic(Gdx.files.internal("skypirate.mp3"));
         music.setLooping(true);
         music.setVolume(0.5f);
-        //music.play();
+        music.play();
         board = new Board();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, game.HEIGHT, game.WIDTH);
-        isSelected = false;
+        isReadyToSwap = false;
     }
     
     @Override
@@ -90,6 +93,17 @@ public class GameScreen implements Screen {
         drawUnits();
         game.batch.end();
         processInput();
+        
+    }
+
+    private void updateBoard() {
+        for (int i = 0; i < board.NUM_COLS; i++) {
+            Array<Unit> col = board.getCol(i);
+            for (int j = 0; j < board.NUM_ROWS; j++) {
+                board.checkMatch(col.get(j));
+            }
+        }
+        
     }
 
     private void processInput() {
@@ -100,21 +114,25 @@ public class GameScreen implements Screen {
             if (xPos >= 0 && yPos >= 0) {
                 highlightAndSwapUnit((int)xPos / UNIT_WIDTH, (int)yPos / UNIT_HEIGHT);
             }
-            
+            updateBoard();
         }
+        
     }
 
     private void highlightAndSwapUnit(int xPos, int yPos) {
         if (xPos < board.NUM_COLS && yPos < board.NUM_ROWS) {
-            Unit unit = board.getCol(yPos).get(xPos);
+            Unit unit = board.getUnit(xPos, yPos);
             unit.toggleSelected();
             if (unit.isSelected()) {
-                if (isSelected) {
+                if (isReadyToSwap) {
                     swapUnit(unit);
                 } else {
-                    isSelected = true;
+                    isReadyToSwap = true;
                     selectedUnit = unit;
                 }
+            } else {
+                isReadyToSwap = false;
+                selectedUnit = null;
             }
         }
     }
@@ -127,7 +145,7 @@ public class GameScreen implements Screen {
             selectedUnit.setType(unitType);
             unit.toggleSelected();
             selectedUnit.toggleSelected();
-            isSelected = false;
+            isReadyToSwap = false;
         } else {
             selectedUnit.toggleSelected();
             selectedUnit = unit;
