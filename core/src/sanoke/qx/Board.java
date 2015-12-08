@@ -87,12 +87,14 @@ public class Board {
 				if (getUnit(r, c).getType() == EMPTY_SLOT) {
 					int replacementRow = getLowestUnit(r + 1, c);
 					if (replacementRow == -1) {
-						
-					} else {
-						columns.get(c).swap(r, replacementRow);
-						getUnit(r, c).setRow(r);
-						getUnit(replacementRow, c).setRow(replacementRow);
-					}
+					    replacementRow = NUM_ROWS - 1;
+					    columns.get(c).pop();
+					    columns.get(c).add(spawnUnit(replacementRow, c));
+                    }
+                    columns.get(c).swap(r, replacementRow);
+                    getUnit(r, c).setRow(r);
+                    getUnit(replacementRow, c).setRow(replacementRow);
+
 				}
 			}
 		}
