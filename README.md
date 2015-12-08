@@ -1,12 +1,16 @@
 # Sanoke Progress Log
 
 ##Latest
-Units now swappable!
+Check matching done!
 
 ##To Do
-* Check matching
+
+###Must Have
 * Update board
-* Combo matches
+
+###Nice to Have #lazyboy
+* Falling down 'animation' 
 * Initialize board with no pre-existing matches
+* Show Combo matches
 
 ![image](https://cloud.githubusercontent.com/assets/12347266/11629106/0af5432a-9d31-11e5-8ecb-eff7293bcd71.png)
