@@ -90,6 +90,7 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         game.batch.begin();
         game.batch.draw(background, 0, 0);
+        game.font.draw(game.batch, "Score: " + board.getPoints(), 0, 15);
         drawUnits();
         game.batch.end();
         processInput();
