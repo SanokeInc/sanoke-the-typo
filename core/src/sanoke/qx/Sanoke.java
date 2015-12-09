@@ -1,6 +1,7 @@
 package sanoke.qx;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -14,7 +15,7 @@ public class Sanoke extends Game {
     public void create() {
         batch = new SpriteBatch();
         // default Arial
-        font = new BitmapFont();
+        font = new BitmapFont(Gdx.files.internal("petitafont.fnt"));
         //TODO main menu
         //this.setScreen(new MainMenuScreen(this));
         this.setScreen(new GameScreen(this));

@@ -38,7 +38,8 @@ public class GameScreen implements Screen {
     public static final int UNIT_WIDTH = 64;
     public static final int BOARD_Y_OFFSET = 100;
     public static final int BOARD_X_OFFSET = 300;
-    
+    public static final int SCORE_X_OFFSET = 5;
+    public static final int SCORE_Y_OFFSET = 30;
     private Board board;
     
     public GameScreen(final Sanoke game) {
@@ -94,7 +95,7 @@ public class GameScreen implements Screen {
         game.batch.begin();
         game.batch.draw(background, 0, 0);
         game.batch.draw(boardImage, BOARD_X_OFFSET, BOARD_Y_OFFSET);
-        game.font.draw(game.batch, "Score: " + board.getPoints(), 0, 15);
+        game.font.draw(game.batch, "Score: " + board.getPoints(), SCORE_X_OFFSET, SCORE_Y_OFFSET);
         drawUnits();
         game.batch.end();
         processInput();
