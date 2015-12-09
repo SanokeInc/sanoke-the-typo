@@ -42,7 +42,7 @@ public class GameScreen implements Screen {
     private Board board;
     
     public GameScreen(final Sanoke game) {
-        background = new Texture(Gdx.files.internal("bamboo.jpg"));
+        background = new Texture(Gdx.files.internal("morelegalphoto.jpg"));
         boardImage = new Texture(Gdx.files.internal("board.png"));
         this.game = game;
         unitsMap = new Texture(Gdx.files.internal("units.png"));
@@ -73,7 +73,7 @@ public class GameScreen implements Screen {
         selectedTextures = new TextureRegion[] {blankImage, redSelectImage,
                 orangeSelectImage, blueSelectImage, greenSelectImage,
                 purpleSelectImage };
-        music = Gdx.audio.newMusic(Gdx.files.internal("skypirate.mp3"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("morelegalmusic.mp3"));
         music.setLooping(true);
         music.setVolume(0.5f);
         music.play();
