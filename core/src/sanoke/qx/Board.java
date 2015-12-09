@@ -115,13 +115,13 @@ public class Board {
 	private int DFS(int row, int col, int type) {
 		pointGraph[row][col] = NOT_MATCHED;
 		int sumPoints = 1;
-		if (row - 1 > 0 && pointGraph[row-1][col] == type) {
+		if (row - 1 >= 0 && pointGraph[row-1][col] == type) {
 			sumPoints += DFS(row-1, col, type);
 		}
-		if (row + 1 < NUM_COLS && pointGraph[row+1][col] == type) {
+		if (row + 1 < NUM_ROWS && pointGraph[row+1][col] == type) {
 			sumPoints += DFS(row+1, col, type);
 		}
-		if (col-1 > 0 && pointGraph[row][col-1] == type) {
+		if (col-1 >= 0 && pointGraph[row][col-1] == type) {
 			sumPoints += DFS(row, col-1, type);
 		}
 		if (col+1 < NUM_COLS && pointGraph[row][col+1] == type) {
