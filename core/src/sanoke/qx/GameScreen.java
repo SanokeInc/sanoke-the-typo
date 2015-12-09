@@ -14,6 +14,7 @@ public class GameScreen implements Screen {
     OrthographicCamera camera;
     private Texture background;
     private Texture unitsMap;
+    private Texture boardImage;
     private TextureRegion blankImage;
     private TextureRegion redImage;
     private TextureRegion orangeImage;
@@ -39,8 +40,10 @@ public class GameScreen implements Screen {
     public static final int BOARD_X_OFFSET = 300;
     
     private Board board;
+    
     public GameScreen(final Sanoke game) {
         background = new Texture(Gdx.files.internal("bamboo.jpg"));
+        boardImage = new Texture(Gdx.files.internal("board.png"));
         this.game = game;
         unitsMap = new Texture(Gdx.files.internal("units.png"));
         blankImage = new TextureRegion(unitsMap, 0, 0, UNIT_WIDTH,
@@ -90,6 +93,7 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         game.batch.begin();
         game.batch.draw(background, 0, 0);
+        game.batch.draw(boardImage, BOARD_X_OFFSET, BOARD_Y_OFFSET);
         game.font.draw(game.batch, "Score: " + board.getPoints(), 0, 15);
         drawUnits();
         game.batch.end();
