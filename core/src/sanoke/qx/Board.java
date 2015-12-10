@@ -161,15 +161,7 @@ public class Board {
 	//returns true if nothing is falling
 	public boolean isStable() {
 		return falling.size == 0;
-        /*for (int c = 0; c < NUM_COLS; c++) {
-            Array<Unit> col = getCol(c);
-            for (int r = 0; r < NUM_ROWS; r++) {
-                if (col.get(r).isFalling()) {
-                    return false;
-                }
-            }
-        }
-        return true;*/
+        
     }
 	
 	public void updateBoard() {
@@ -181,7 +173,7 @@ public class Board {
 				
 			}
 		}
-		if (removeMatches()) {
+		if (removeMatches() && isStable()) {
 			clearSound.play();
 			pullDown();
 		}
@@ -190,7 +182,7 @@ public class Board {
 	// Pulls tiles down and generates new units.
 	public void pullDown() {
 		for (int c = 0; c < NUM_COLS; c++) {
-		    int colOffset = 1;
+		    int colOffset = 0;
 			for (int r = 0; r < NUM_ROWS; r++) {
 				if (getUnit(r, c).getType() == EMPTY_SLOT) {
 					int replacementRow = getLowestUnit(r + 1, c);
@@ -200,15 +192,11 @@ public class Board {
 						columns.get(c).add(spawnUnit(NUM_ROWS + colOffset, c));
 						colOffset++;
 					}
-					falling.add(getUnit(r, c));
-					falling.add(getUnit(replacementRow, c));
+					
 					columns.get(c).swap(r, replacementRow);					
 					
 					getUnit(r, c).setFinalRow(r);
-					getUnit(replacementRow, c).setFinalRow(replacementRow);
-					
-					
-
+					falling.add(getUnit(r, c));
 				}
 			}
 		}

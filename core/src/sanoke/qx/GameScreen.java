@@ -107,31 +107,14 @@ public class GameScreen implements Screen {
     }
 
     private void updateUnitsPosition(float delta) {
-        /*for (int c = 0; c < board.NUM_COLS; c++) {
-            Array<Unit> col = board.getCol(c);
-            for (int r = 0; r < board.NUM_ROWS; r++) {
-                Unit unit = col.get(r);
-                if (unit.isFalling()) {
-                    unit.setRow(Math.max(unit.getRow() - delta * FALL_RATE, unit.getFinalRow()));
-                }
-            }
-        }*/      
-        /*Iterator<Unit> unitIterator = board.getFalling().iterator();
-		while (unitIterator.hasNext()) {
-			Unit unit = unitIterator.next();
-			if (unit.isFalling()) {
-                unit.setRow(Math.max(unit.getRow() - delta * FALL_RATE, unit.getFinalRow()));
-            } else {
-            	unitIterator.remove();
-            	unitIterator.
-            }
-		}*/
+        
 		for (int i=0; i<board.getFalling().size; i++) {
 			Unit unit = board.getFalling().get(i);
 			if (unit.isFalling()) {
                 unit.setRow(Math.max(unit.getRow() - delta * FALL_RATE, unit.getFinalRow()));
             } else {
             	board.getFalling().removeIndex(i);
+            	i--;
             }
 		}
     }
