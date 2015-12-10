@@ -1,7 +1,5 @@
 package sanoke.qx;
 
-import java.util.Iterator;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -53,13 +51,14 @@ public class GameScreen implements Screen {
     }
 
     private void updateUnitsPosition(float delta) {
-        
-		for (int i=0; i<board.getFalling().size; i++) {
-			Unit unit = board.getFalling().get(i);
+    	Array<Unit> fallingUnits = board.getFalling();
+    	
+		for (int i = 0; i < fallingUnits.size; i++) {
+			Unit unit = fallingUnits.get(i);
 			if (unit.isFalling()) {
                 unit.setRow(Math.max(unit.getRow() - delta * FALL_RATE, unit.getFinalRow()));
             } else {
-            	board.getFalling().removeIndex(i);
+            	fallingUnits.removeIndex(i);
             	i--;
             }
 		}
@@ -104,11 +103,11 @@ public class GameScreen implements Screen {
     // swaps units if they are neighbours, else de-select old unit
     private void swapUnit(Unit unit) {
         if (selectedUnit.isNeighbour(unit)) {
-            int unitType = unit.getType();
-            unit.setType(selectedUnit.getType());
-            selectedUnit.setType(unitType);
+            swapTypesWithSelected(unit);
+            
             unit.toggleSelected();
             selectedUnit.toggleSelected();
+            
             isReadyToSwap = false;
             board.moveAttempt();
         } else {
@@ -116,6 +115,12 @@ public class GameScreen implements Screen {
             selectedUnit = unit;
         }
     }
+
+	private void swapTypesWithSelected(Unit unit) {
+		int unitType = unit.getType();
+		unit.setType(selectedUnit.getType());
+		selectedUnit.setType(unitType);
+	}
 
     private void drawUnits() {
         for (int c = 0; c < board.NUM_COLS; c++) {

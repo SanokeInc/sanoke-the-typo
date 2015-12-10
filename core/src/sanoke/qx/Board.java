@@ -7,9 +7,9 @@ public class Board {
 	public final int NUM_ROWS = 8;
 	public final int NUM_COLS = 8;
 	public static final int EMPTY_SLOT = 0;
-	
+
 	public static final int NOT_MATCHED = -1;
-	
+
 	public static final int POINTS_FOR_MOVE = 4;
 	public static final int POINTS_MATCH_THREE = 5;
 	public static final int POINTS_MATCH_FOUR = 6;
@@ -17,19 +17,33 @@ public class Board {
 	public static final int POINTS_MATCH_SIX = 8;
 	public static final int POINTS_MATCH_SEVEN = 9;
 	public static final int POINTS_MATCH_MANY = 10;
+
+	public static final int MINIMUM_NUM_TYPE = 1;
+	public static final int NUMBER_OF_UNIT_TYPES = 6;
+
+	public static final int INITIAL_CONNECTED_POINTS = 1;
+	public static final int PARAM_ADJACENT = 1;
+	public static final int PARAM_VALID_BOUND = 0;
 	
+	public static final int PARAM_NO_REPLACEMENT = -1;
+	public final int PARAM_TOPMOST_ROW = NUM_ROWS - 1;
+
 	private Array<Unit> falling;
-	
+
 	private Array<Array<Unit>> columns;
-	// private Array<Unit> matchingUnits;
+
 	private int points;
 	private int[][] pointGraph;
 
 	public Board() {
 		columns = new Array<Array<Unit>>(NUM_COLS);
-		falling = new Array<Unit>(NUM_ROWS * NUM_COLS * 2);
-		
-		// initialize the units
+		falling = new Array<Unit>(NUM_ROWS * NUM_COLS);
+
+		initializeUnits();
+		updateBoard();
+	}
+
+	private void initializeUnits() {
 		for (int c = 0; c < NUM_COLS; c++) {
 			Array<Unit> col = new Array<Unit>(NUM_ROWS);
 			for (int r = 0; r < NUM_ROWS; r++) {
@@ -37,16 +51,12 @@ public class Board {
 			}
 			columns.add(col);
 		}
-		updateBoard();
-		
-		// Points gain from initial state do not count.
-		points = 0;
 	}
 
 	public int getPoints() {
 		return points;
 	}
-	
+
 	public Array<Unit> getFalling() {
 		return falling;
 	}
@@ -57,7 +67,11 @@ public class Board {
 
 	// spawns a random Unit at row, col
 	public Unit spawnUnit(int row, int col) {
-		return new Unit(row, col, MathUtils.random(1, 6));
+		return new Unit(row, col, generateRandomType());
+	}
+
+	private int generateRandomType() {
+		return MathUtils.random(MINIMUM_NUM_TYPE, NUMBER_OF_UNIT_TYPES);
 	}
 
 	public Array<Unit> getCol(int col) {
@@ -71,36 +85,40 @@ public class Board {
 
 	public void checkMatch(Unit unit) {
 		if (unit.getType() != EMPTY_SLOT) {
-			isHoriMatch(unit);
-			isVertMatch(unit);
+			checkHoriMatch(unit);
+			checkVertMatch(unit);
 		}
 	}
 
 	public boolean removeMatches() {
+		initializePointGraph();
+
+		boolean hasMatch = false;
+		for (int c = 0; c < NUM_COLS; c++) {
+			for (int r = 0; r < NUM_ROWS; r++) {
+				Unit currentUnit = getUnit(r, c);
+				if (currentUnit.isVertMatch() || currentUnit.isHoriMatch()) {
+					currentUnit.setHoriMatch(false);
+					currentUnit.setVertMatch(false);
+					pointGraph[r][c] = currentUnit.getType();
+					currentUnit.setType(0);
+					hasMatch = true;
+				}
+			}
+		}
+		awardPoints();
+		return hasMatch;
+	}
+
+	private void initializePointGraph() {
 		pointGraph = new int[NUM_ROWS][NUM_COLS];
 		for (int r = 0; r < NUM_ROWS; r++) {
 			for (int c = 0; c < NUM_COLS; c++) {
 				pointGraph[r][c] = NOT_MATCHED;
 			}
 		}
-		
-		boolean hasMatch = false;
-		for (int c = 0; c < NUM_COLS; c++) {
-            for (int r = 0; r < NUM_ROWS; r++) {
-                Unit currentUnit = getUnit(r, c);
-                if (currentUnit.isVertMatch() || currentUnit.isHoriMatch()) {
-                    currentUnit.setHoriMatch(false);
-                    currentUnit.setVertMatch(false);
-                    pointGraph[r][c] = currentUnit.getType();
-                    currentUnit.setType(0);
-                    hasMatch = true;
-                }
-            }
-        }
-		awardPoints();
-		return hasMatch;
 	}
-	
+
 	private void awardPoints() {
 		for (int r = 0; r < NUM_ROWS; r++) {
 			for (int c = 0; c < NUM_COLS; c++) {
@@ -111,27 +129,31 @@ public class Board {
 			}
 		}
 	}
-	
+
 	private int DFS(int row, int col, int type) {
 		pointGraph[row][col] = NOT_MATCHED;
-		int sumPoints = 1;
-		if (row - 1 >= 0 && pointGraph[row-1][col] == type) {
-			sumPoints += DFS(row-1, col, type);
+		int sumPoints = INITIAL_CONNECTED_POINTS;
+		if (row - PARAM_ADJACENT >= PARAM_VALID_BOUND
+				&& pointGraph[row - PARAM_ADJACENT][col] == type) {
+			sumPoints += DFS(row - PARAM_ADJACENT, col, type);
 		}
-		if (row + 1 < NUM_ROWS && pointGraph[row+1][col] == type) {
-			sumPoints += DFS(row+1, col, type);
+		if (row + PARAM_ADJACENT < NUM_ROWS
+				&& pointGraph[row + PARAM_ADJACENT][col] == type) {
+			sumPoints += DFS(row + PARAM_ADJACENT, col, type);
 		}
-		if (col-1 >= 0 && pointGraph[row][col-1] == type) {
-			sumPoints += DFS(row, col-1, type);
+		if (col - PARAM_ADJACENT >= PARAM_VALID_BOUND
+				&& pointGraph[row][col - PARAM_ADJACENT] == type) {
+			sumPoints += DFS(row, col - PARAM_ADJACENT, type);
 		}
-		if (col+1 < NUM_COLS && pointGraph[row][col+1] == type) {
-			sumPoints += DFS(row, col+1, type);
+		if (col + PARAM_ADJACENT < NUM_COLS
+				&& pointGraph[row][col + PARAM_ADJACENT] == type) {
+			sumPoints += DFS(row, col + PARAM_ADJACENT, type);
 		}
 		return sumPoints;
 	}
-	
+
 	private void addPoints(int numInConnectedComponents) {
-		assert(numInConnectedComponents >= 3);
+		assert (numInConnectedComponents >= 3);
 		switch (numInConnectedComponents) {
 			case 3:
 				points += POINTS_MATCH_THREE;
@@ -150,24 +172,17 @@ public class Board {
 				break;
 			default:
 				points += POINTS_MATCH_MANY;
-		}
+			}
 	}
-	
-	//returns true if nothing is falling
+
+	// returns true if nothing is falling
 	public boolean isStable() {
 		return falling.size == 0;
-        
-    }
-	
+
+	}
+
 	public void updateBoard() {
-		for (int c = 0; c < NUM_COLS; c++) {
-			Array<Unit> col = getCol(c);
-			for (int r = 0; r < NUM_ROWS; r++) {
-                Unit unit = col.get(r);
-                checkMatch(unit);
-				
-			}
-		}
+		findMatches();
 
 		if (removeMatches() && isStable()) {
 			Assets.playSound();
@@ -176,27 +191,41 @@ public class Board {
 		}
 	}
 
+	private void findMatches() {
+		for (int c = 0; c < NUM_COLS; c++) {
+			Array<Unit> col = getCol(c);
+			for (int r = 0; r < NUM_ROWS; r++) {
+				Unit unit = col.get(r);
+				checkMatch(unit);
+			}
+		}
+	}
+
 	// Pulls tiles down and generates new units.
 	public void pullDown() {
 		for (int c = 0; c < NUM_COLS; c++) {
-		    int colOffset = 0;
+			int colOffset = 0;
 			for (int r = 0; r < NUM_ROWS; r++) {
 				if (getUnit(r, c).getType() == EMPTY_SLOT) {
 					int replacementRow = getLowestUnit(r + 1, c);
-					if (replacementRow == -1) {
-						replacementRow = NUM_ROWS - 1;
-						columns.get(c).pop();
-						columns.get(c).add(spawnUnit(NUM_ROWS + colOffset, c));
+					if (replacementRow == PARAM_NO_REPLACEMENT) {
+						replacementRow = PARAM_TOPMOST_ROW;
+						createReplacementUnitAtTop(c, colOffset);
 						colOffset++;
 					}
-					
-					columns.get(c).swap(r, replacementRow);					
-					
+
+					columns.get(c).swap(r, replacementRow);
+
 					getUnit(r, c).setFinalRow(r);
 					falling.add(getUnit(r, c));
 				}
 			}
 		}
+	}
+
+	private void createReplacementUnitAtTop(int c, int colOffset) {
+		columns.get(c).pop();
+		columns.get(c).add(spawnUnit(NUM_ROWS + colOffset, c));
 	}
 
 	// returns row number of lowest unit above specified unit
@@ -210,10 +239,11 @@ public class Board {
 		return getLowestUnit(rowToCheck + 1, columnNum);
 	}
 
-	public boolean isVertMatch(Unit unit) {
+	public boolean checkVertMatch(Unit unit) {
 		if (unit.isVertMatch()) {
 			return true;
 		}
+		// Check for matches more than 3
 		if (unit.getFinalRow() > 2) {
 			Unit belowUnit = getUnit(unit.getFinalRow() - 1, unit.getCol());
 			if (belowUnit.isVertMatch()
@@ -222,6 +252,7 @@ public class Board {
 				return true;
 			}
 		}
+		// Check for matches of 3 units
 		if (unit.getFinalRow() < NUM_ROWS - 2) {
 			Unit aboveUnit = getUnit(unit.getFinalRow() + 1, unit.getCol());
 			Unit aboveTwoUnit = getUnit(unit.getFinalRow() + 2, unit.getCol());
@@ -236,10 +267,11 @@ public class Board {
 		return false;
 	}
 
-	public boolean isHoriMatch(Unit unit) {
+	public boolean checkHoriMatch(Unit unit) {
 		if (unit.isHoriMatch()) {
 			return true;
 		}
+		// Check for matches more than 3
 		if (unit.getCol() > 2) {
 			Unit leftUnit = getUnit(unit.getFinalRow(), unit.getCol() - 1);
 			if (leftUnit.isHoriMatch() && unit.getType() == leftUnit.getType()) {
@@ -247,6 +279,7 @@ public class Board {
 				return true;
 			}
 		}
+		// Check for matches of 3 units
 		if (unit.getCol() < NUM_COLS - 2) {
 			Unit rightUnit = getUnit(unit.getFinalRow(), unit.getCol() + 1);
 			Unit rightTwoUnit = getUnit(unit.getFinalRow(), unit.getCol() + 2);

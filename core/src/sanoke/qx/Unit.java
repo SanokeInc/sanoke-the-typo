@@ -76,8 +76,7 @@ public class Unit {
             return true;
         } else {
             return false;
-        }
-        
+        } 
     }
     
     public boolean isSelected() {
