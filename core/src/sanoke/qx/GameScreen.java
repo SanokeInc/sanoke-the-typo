@@ -101,7 +101,7 @@ public class GameScreen implements Screen {
         drawUnits();
         game.batch.end();
         processInput();
-        
+        updateBoard();
     }
 
     private void updateUnitsPosition(float delta) {
@@ -118,7 +118,9 @@ public class GameScreen implements Screen {
     }
 
     private void updateBoard() {
-        board.updateBoard();
+        if (board.isStable()) {
+            board.updateBoard();
+        }
     }
 
     private void processInput() {
@@ -129,7 +131,6 @@ public class GameScreen implements Screen {
             if (xPos >= 0 && yPos >= 0) {
                 highlightAndSwapUnit((int)yPos / UNIT_HEIGHT, (int)xPos / UNIT_WIDTH);
             }
-            updateBoard();
         }
         
     }

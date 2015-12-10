@@ -150,7 +150,20 @@ public class Board {
 				points += POINTS_MATCH_MANY;
 		}
 	}
-
+	
+	//returns true if nothing is falling
+	public boolean isStable() {
+        for (int c = 0; c < NUM_COLS; c++) {
+            Array<Unit> col = getCol(c);
+            for (int r = 0; r < NUM_ROWS; r++) {
+                if (col.get(r).isFalling()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+	
 	public void updateBoard() {
 		for (int c = 0; c < NUM_COLS; c++) {
 			Array<Unit> col = getCol(c);
@@ -163,7 +176,6 @@ public class Board {
 		if (removeMatches()) {
 			clearSound.play();
 			pullDown();
-			updateBoard();
 		}
 	}
 
