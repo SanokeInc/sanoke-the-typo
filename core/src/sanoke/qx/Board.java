@@ -155,7 +155,11 @@ public class Board {
 		for (int c = 0; c < NUM_COLS; c++) {
 			Array<Unit> col = getCol(c);
 			for (int r = 0; r < NUM_ROWS; r++) {
-				checkMatch(col.get(r));
+			    Unit unit = col.get(r);
+			    if (!unit.isFalling()) {
+			        checkMatch(unit);
+			    }
+				
 			}
 		}
 		if (removeMatches()) {
