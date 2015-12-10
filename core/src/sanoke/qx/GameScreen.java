@@ -40,7 +40,7 @@ public class GameScreen implements Screen {
     public static final int BOARD_X_OFFSET = 300;
     public static final int SCORE_X_OFFSET = 5;
     public static final int SCORE_Y_OFFSET = 30;
-    public static final int FALL_RATE = 10;
+    public static final int FALL_RATE = 3;
     private Board board;
     
     public GameScreen(final Sanoke game) {
@@ -178,10 +178,12 @@ public class GameScreen implements Screen {
                 } else {
                     unitTexture = unselectedTextures[unit.getType()];
                 }
-                game.batch
-                        .draw(unitTexture,
-                                c * unit.UNIT_WIDTH + BOARD_X_OFFSET, unit.getRow()
-                                        * unit.UNIT_LENGTH + BOARD_Y_OFFSET);
+                float xPos = c * unit.UNIT_WIDTH + BOARD_X_OFFSET;
+                float yPos = unit.getRow() * unit.UNIT_LENGTH + BOARD_Y_OFFSET;
+                if (yPos <= board.NUM_ROWS * unit.UNIT_LENGTH + BOARD_Y_OFFSET) {
+                    game.batch.draw(unitTexture, xPos, yPos);
+                }
+                
             }
         }
     }

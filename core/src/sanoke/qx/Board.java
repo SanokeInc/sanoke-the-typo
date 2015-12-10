@@ -155,10 +155,8 @@ public class Board {
 		for (int c = 0; c < NUM_COLS; c++) {
 			Array<Unit> col = getCol(c);
 			for (int r = 0; r < NUM_ROWS; r++) {
-			    Unit unit = col.get(r);
-			    if (!unit.isFalling()) {
-			        checkMatch(unit);
-			    }
+                Unit unit = col.get(r);
+                checkMatch(unit);
 				
 			}
 		}
@@ -172,13 +170,15 @@ public class Board {
 	// Pulls tiles down and generates new units.
 	public void pullDown() {
 		for (int c = 0; c < NUM_COLS; c++) {
+		    int colOffset = 0;
 			for (int r = 0; r < NUM_ROWS; r++) {
 				if (getUnit(r, c).getType() == EMPTY_SLOT) {
 					int replacementRow = getLowestUnit(r + 1, c);
 					if (replacementRow == -1) {
 						replacementRow = NUM_ROWS - 1;
 						columns.get(c).pop();
-						columns.get(c).add(spawnUnit(NUM_ROWS, c));
+						columns.get(c).add(spawnUnit(NUM_ROWS + colOffset, c));
+						colOffset++;
 					}
 					columns.get(c).swap(r, replacementRow);
 					getUnit(r, c).setFinalRow(r);
