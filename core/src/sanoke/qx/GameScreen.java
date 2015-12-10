@@ -1,5 +1,7 @@
 package sanoke.qx;
 
+import java.util.Iterator;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -51,16 +53,16 @@ public class GameScreen implements Screen {
     }
 
     private void updateUnitsPosition(float delta) {
-        for (int c = 0; c < board.NUM_COLS; c++) {
-            Array<Unit> col = board.getCol(c);
-            for (int r = 0; r < board.NUM_ROWS; r++) {
-                Unit unit = col.get(r);
-                if (unit.isFalling()) {
-                    unit.setRow(Math.max(unit.getRow() - delta * FALL_RATE, unit.getFinalRow()));
-                }
-            }
-        }
         
+		for (int i=0; i<board.getFalling().size; i++) {
+			Unit unit = board.getFalling().get(i);
+			if (unit.isFalling()) {
+                unit.setRow(Math.max(unit.getRow() - delta * FALL_RATE, unit.getFinalRow()));
+            } else {
+            	board.getFalling().removeIndex(i);
+            	i--;
+            }
+		}
     }
 
     private void updateBoard() {

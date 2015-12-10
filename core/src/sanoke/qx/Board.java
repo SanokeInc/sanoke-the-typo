@@ -18,6 +18,8 @@ public class Board {
 	public static final int POINTS_MATCH_SEVEN = 9;
 	public static final int POINTS_MATCH_MANY = 10;
 	
+	private Array<Unit> falling;
+	
 	private Array<Array<Unit>> columns;
 	// private Array<Unit> matchingUnits;
 	private int points;
@@ -25,6 +27,7 @@ public class Board {
 
 	public Board() {
 		columns = new Array<Array<Unit>>(NUM_COLS);
+		falling = new Array<Unit>(NUM_ROWS * NUM_COLS * 2);
 		
 		// initialize the units
 		for (int c = 0; c < NUM_COLS; c++) {
@@ -42,6 +45,10 @@ public class Board {
 
 	public int getPoints() {
 		return points;
+	}
+	
+	public Array<Unit> getFalling() {
+		return falling;
 	}
 
 	public void moveAttempt() {
@@ -148,15 +155,8 @@ public class Board {
 	
 	//returns true if nothing is falling
 	public boolean isStable() {
-        for (int c = 0; c < NUM_COLS; c++) {
-            Array<Unit> col = getCol(c);
-            for (int r = 0; r < NUM_ROWS; r++) {
-                if (col.get(r).isFalling()) {
-                    return false;
-                }
-            }
-        }
-        return true;
+		return falling.size == 0;
+        
     }
 	
 	public void updateBoard() {
@@ -168,8 +168,10 @@ public class Board {
 				
 			}
 		}
-		if (removeMatches()) {
-		    Assets.playSound();
+
+		if (removeMatches() && isStable()) {
+			Assets.playSound();
+
 			pullDown();
 		}
 	}
@@ -187,10 +189,11 @@ public class Board {
 						columns.get(c).add(spawnUnit(NUM_ROWS + colOffset, c));
 						colOffset++;
 					}
-					columns.get(c).swap(r, replacementRow);
+					
+					columns.get(c).swap(r, replacementRow);					
+					
 					getUnit(r, c).setFinalRow(r);
-					getUnit(replacementRow, c).setFinalRow(replacementRow);
-
+					falling.add(getUnit(r, c));
 				}
 			}
 		}
