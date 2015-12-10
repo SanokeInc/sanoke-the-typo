@@ -11,12 +11,9 @@ public class GameScreen implements Screen {
     
     OrthographicCamera camera;
     
-    
     boolean isReadyToSwap;
     Unit selectedUnit;
     private static TextureRegion unitTexture;
-    public static final int UNIT_HEIGHT = 64;
-    public static final int UNIT_WIDTH = 64;
     public static final int BOARD_Y_OFFSET = 100;
     public static final int BOARD_X_OFFSET = 300;
     public static final int SCORE_X_OFFSET = 5;
@@ -78,7 +75,7 @@ public class GameScreen implements Screen {
             float yPos = (game.HEIGHT - BOARD_Y_OFFSET - Gdx.input.getY());
             // lazy validation for positive numbers
             if (xPos >= 0 && yPos >= 0) {
-                highlightAndSwapUnit((int)yPos / UNIT_HEIGHT, (int)xPos / UNIT_WIDTH);
+                highlightAndSwapUnit((int)yPos / Assets.UNIT_LENGTH, (int)xPos / Assets.UNIT_WIDTH);
             }
         }
         
@@ -128,9 +125,9 @@ public class GameScreen implements Screen {
                 } else {
                     unitTexture = Assets.unselectedTextures[unit.getType()];
                 }
-                float xPos = c * unit.UNIT_WIDTH + BOARD_X_OFFSET;
-                float yPos = unit.getRow() * unit.UNIT_LENGTH + BOARD_Y_OFFSET;
-                if (yPos <= board.NUM_ROWS * unit.UNIT_LENGTH + BOARD_Y_OFFSET) {
+                float xPos = c * Assets.UNIT_WIDTH + BOARD_X_OFFSET;
+                float yPos = unit.getRow() * Assets.UNIT_LENGTH + BOARD_Y_OFFSET;
+                if (yPos <= board.NUM_ROWS * Assets.UNIT_LENGTH + BOARD_Y_OFFSET) {
                     game.batch.draw(unitTexture, xPos, yPos);
                 }
                 

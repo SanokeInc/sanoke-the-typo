@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Assets {
-    public static final int UNIT_HEIGHT = 64;
+    public static final int UNIT_LENGTH = 64;
     public static final int UNIT_WIDTH = 64;
     
     public static Texture background;
@@ -39,29 +39,29 @@ public class Assets {
         boardImage = new Texture(Gdx.files.internal("board.png"));
         unitsMap = new Texture(Gdx.files.internal("units.png"));
         blankImage = new TextureRegion(unitsMap, 0, 0, UNIT_WIDTH,
-                UNIT_HEIGHT);
+                UNIT_LENGTH);
         redImage = new TextureRegion(unitsMap, UNIT_WIDTH * 1, 0, UNIT_WIDTH,
-                UNIT_HEIGHT);
+                UNIT_LENGTH);
         orangeImage = new TextureRegion(unitsMap, UNIT_WIDTH * 2, 0,
-                UNIT_WIDTH, UNIT_HEIGHT);
+                UNIT_WIDTH, UNIT_LENGTH);
         blueImage = new TextureRegion(unitsMap, UNIT_WIDTH * 3, 0, UNIT_WIDTH,
-                UNIT_HEIGHT);
+                UNIT_LENGTH);
         greenImage = new TextureRegion(unitsMap, UNIT_WIDTH * 4, 0, UNIT_WIDTH,
-                UNIT_HEIGHT);
+                UNIT_LENGTH);
         purpleImage = new TextureRegion(unitsMap, UNIT_WIDTH * 5, 0,
-                UNIT_WIDTH, UNIT_HEIGHT);
+                UNIT_WIDTH, UNIT_LENGTH);
         unselectedTextures = new TextureRegion[] {blankImage, redImage, orangeImage,
                 blueImage, greenImage, purpleImage };
         redSelectImage = new TextureRegion(unitsMap, UNIT_WIDTH * 1,
-                UNIT_HEIGHT, UNIT_WIDTH, UNIT_HEIGHT);
+                UNIT_LENGTH, UNIT_WIDTH, UNIT_LENGTH);
         orangeSelectImage = new TextureRegion(unitsMap, UNIT_WIDTH * 2,
-                UNIT_HEIGHT, UNIT_WIDTH, UNIT_HEIGHT);
+                UNIT_LENGTH, UNIT_WIDTH, UNIT_LENGTH);
         blueSelectImage = new TextureRegion(unitsMap, UNIT_WIDTH * 3,
-                UNIT_HEIGHT, UNIT_WIDTH, UNIT_HEIGHT);
+                UNIT_LENGTH, UNIT_WIDTH, UNIT_LENGTH);
         greenSelectImage = new TextureRegion(unitsMap, UNIT_WIDTH * 4,
-                UNIT_HEIGHT, UNIT_WIDTH, UNIT_HEIGHT);
+                UNIT_LENGTH, UNIT_WIDTH, UNIT_LENGTH);
         purpleSelectImage = new TextureRegion(unitsMap, UNIT_WIDTH * 5,
-                UNIT_HEIGHT, UNIT_WIDTH, UNIT_HEIGHT);
+                UNIT_LENGTH, UNIT_WIDTH, UNIT_LENGTH);
         selectedTextures = new TextureRegion[] {blankImage, redSelectImage,
                 orangeSelectImage, blueSelectImage, greenSelectImage,
                 purpleSelectImage };

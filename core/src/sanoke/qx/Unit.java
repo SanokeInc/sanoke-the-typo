@@ -11,8 +11,6 @@ public class Unit {
      * private static final int BLUE = 3;
      * private static final int PURPLE = 4;
      */
-    public final int UNIT_LENGTH = 64;
-    public final int UNIT_WIDTH = 64;
 
     // row and column unit is currently at
     private float row;
