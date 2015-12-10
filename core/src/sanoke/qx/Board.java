@@ -84,23 +84,21 @@ public class Board {
 		
 		boolean hasMatch = false;
 		for (int c = 0; c < NUM_COLS; c++) {
-			for (int r = 0; r < NUM_ROWS; r++) {
-				Unit currentUnit = getUnit(r, c);
-				if (currentUnit.isVertMatch() || currentUnit.isHoriMatch()) {
-					currentUnit.setHoriMatch(false);
-					currentUnit.setVertMatch(false);
-					pointGraph[r][c] = currentUnit.getType();
-					currentUnit.setType(0);
-					hasMatch = true;
-				}
-			}
-		}
-
+            for (int r = 0; r < NUM_ROWS; r++) {
+                Unit currentUnit = getUnit(r, c);
+                if (currentUnit.isVertMatch() || currentUnit.isHoriMatch()) {
+                    currentUnit.setHoriMatch(false);
+                    currentUnit.setVertMatch(false);
+                    pointGraph[r][c] = currentUnit.getType();
+                    currentUnit.setType(0);
+                    hasMatch = true;
+                }
+            }
+        }
 		awardPoints();
-
 		return hasMatch;
 	}
-
+	
 	private void awardPoints() {
 		for (int r = 0; r < NUM_ROWS; r++) {
 			for (int c = 0; c < NUM_COLS; c++) {
@@ -176,11 +174,11 @@ public class Board {
 					if (replacementRow == -1) {
 						replacementRow = NUM_ROWS - 1;
 						columns.get(c).pop();
-						columns.get(c).add(spawnUnit(replacementRow, c));
+						columns.get(c).add(spawnUnit(NUM_ROWS, c));
 					}
 					columns.get(c).swap(r, replacementRow);
-					getUnit(r, c).setRow(r);
-					getUnit(replacementRow, c).setRow(replacementRow);
+					getUnit(r, c).setFinalRow(r);
+					getUnit(replacementRow, c).setFinalRow(replacementRow);
 
 				}
 			}
@@ -202,17 +200,17 @@ public class Board {
 		if (unit.isVertMatch()) {
 			return true;
 		}
-		if (unit.getRow() > 2) {
-			Unit belowUnit = getUnit(unit.getRow() - 1, unit.getCol());
+		if (unit.getFinalRow() > 2) {
+			Unit belowUnit = getUnit(unit.getFinalRow() - 1, unit.getCol());
 			if (belowUnit.isVertMatch()
 					&& unit.getType() == belowUnit.getType()) {
 				unit.setVertMatch(true);
 				return true;
 			}
 		}
-		if (unit.getRow() < NUM_ROWS - 2) {
-			Unit aboveUnit = getUnit(unit.getRow() + 1, unit.getCol());
-			Unit aboveTwoUnit = getUnit(unit.getRow() + 2, unit.getCol());
+		if (unit.getFinalRow() < NUM_ROWS - 2) {
+			Unit aboveUnit = getUnit(unit.getFinalRow() + 1, unit.getCol());
+			Unit aboveTwoUnit = getUnit(unit.getFinalRow() + 2, unit.getCol());
 			if (unit.getType() == aboveUnit.getType()
 					&& unit.getType() == aboveTwoUnit.getType()) {
 				unit.setVertMatch(true);
@@ -229,15 +227,15 @@ public class Board {
 			return true;
 		}
 		if (unit.getCol() > 2) {
-			Unit leftUnit = getUnit(unit.getRow(), unit.getCol() - 1);
+			Unit leftUnit = getUnit(unit.getFinalRow(), unit.getCol() - 1);
 			if (leftUnit.isHoriMatch() && unit.getType() == leftUnit.getType()) {
 				unit.setHoriMatch(true);
 				return true;
 			}
 		}
 		if (unit.getCol() < NUM_COLS - 2) {
-			Unit rightUnit = getUnit(unit.getRow(), unit.getCol() + 1);
-			Unit rightTwoUnit = getUnit(unit.getRow(), unit.getCol() + 2);
+			Unit rightUnit = getUnit(unit.getFinalRow(), unit.getCol() + 1);
+			Unit rightTwoUnit = getUnit(unit.getFinalRow(), unit.getCol() + 2);
 			if (unit.getType() == rightUnit.getType()
 					&& unit.getType() == rightTwoUnit.getType()) {
 				unit.setHoriMatch(true);

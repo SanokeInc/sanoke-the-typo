@@ -40,6 +40,7 @@ public class GameScreen implements Screen {
     public static final int BOARD_X_OFFSET = 300;
     public static final int SCORE_X_OFFSET = 5;
     public static final int SCORE_Y_OFFSET = 30;
+    public static final int FALL_RATE = 10;
     private Board board;
     
     public GameScreen(final Sanoke game) {
@@ -96,15 +97,28 @@ public class GameScreen implements Screen {
         game.batch.draw(background, 0, 0);
         game.batch.draw(boardImage, BOARD_X_OFFSET, BOARD_Y_OFFSET);
         game.font.draw(game.batch, "Score: " + board.getPoints(), SCORE_X_OFFSET, SCORE_Y_OFFSET);
+        updateUnitsPosition(delta);
         drawUnits();
         game.batch.end();
         processInput();
         
     }
 
+    private void updateUnitsPosition(float delta) {
+        for (int c = 0; c < board.NUM_COLS; c++) {
+            Array<Unit> col = board.getCol(c);
+            for (int r = 0; r < board.NUM_ROWS; r++) {
+                Unit unit = col.get(r);
+                if (unit.isFalling()) {
+                    unit.setRow(Math.max(unit.getRow() - delta * FALL_RATE, unit.getFinalRow()));
+                }
+            }
+        }
+        
+    }
+
     private void updateBoard() {
         board.updateBoard();
-        // System.out.println("Current Points = " + board.getPoints());
     }
 
     private void processInput() {
@@ -166,7 +180,7 @@ public class GameScreen implements Screen {
                 }
                 game.batch
                         .draw(unitTexture,
-                                c * unit.UNIT_WIDTH + BOARD_X_OFFSET, r
+                                c * unit.UNIT_WIDTH + BOARD_X_OFFSET, unit.getRow()
                                         * unit.UNIT_LENGTH + BOARD_Y_OFFSET);
             }
         }

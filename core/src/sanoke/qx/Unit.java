@@ -13,9 +13,13 @@ public class Unit {
      */
     public final int UNIT_LENGTH = 64;
     public final int UNIT_WIDTH = 64;
-    
-    private int row;
+
+    // row and column unit is currently at
+    private float row;
     private int col;
+    // row that unit should be at
+    private int finalRow;
+    
     private int type;
     
     private boolean isSelected;
@@ -24,11 +28,12 @@ public class Unit {
     
     public Unit(int row, int col, int type) {
         this.row = row;
+        this.finalRow = row;
         this.col = col;
         this.type = type;
     }
-
-    public int getRow() {
+    
+    public float getRow() {
         return row;
     }
 
@@ -39,22 +44,34 @@ public class Unit {
     public int getType() {
         return type;
     }
-    
-    public void setRow(int row) {
-    	this.row = row;
+
+    public int getFinalRow() {
+        return finalRow;
     }
     
+    public void setRow(float row) {
+        this.row = row;
+    }
+
     public void setCol(int col) {
-    	this.col = col;
+        this.col = col;
     }
     
     public void setType(int newType) {
         type = newType;
     }
+
+    public void setFinalRow(int row) {
+        this.finalRow = row;
+    }
+
+    public boolean isFalling() {
+        return finalRow < row;
+    }
     
     public boolean isNeighbour(Unit unit) {
         int colOffset = Math.abs((unit.getCol() - col));
-        int rowOffset = Math.abs((unit.getRow() - row));
+        int rowOffset = Math.abs((unit.getFinalRow() - finalRow));
         if ((colOffset == 1 && rowOffset == 0)
                 || (colOffset == 0 && rowOffset == 1)) {
             return true;
