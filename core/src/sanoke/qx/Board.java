@@ -50,7 +50,7 @@ public class Board {
 
 	// spawns a random Unit at row, col
 	public Unit spawnUnit(int row, int col) {
-		return new Unit(row, col, MathUtils.random(1, 5));
+		return new Unit(row, col, MathUtils.random(1, 6));
 	}
 
 	public Array<Unit> getCol(int col) {

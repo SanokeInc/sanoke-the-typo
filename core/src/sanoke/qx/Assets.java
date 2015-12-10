@@ -18,6 +18,7 @@ public class Assets {
     private static TextureRegion blankImage;
     private static TextureRegion redImage;
     private static TextureRegion orangeImage;
+    private static TextureRegion yellowImage;
     private static TextureRegion blueImage;
     private static TextureRegion greenImage;
     private static TextureRegion purpleImage;
@@ -25,6 +26,7 @@ public class Assets {
     
     private static TextureRegion redSelectImage;
     private static TextureRegion orangeSelectImage;
+    private static TextureRegion yellowSelectImage;
     private static TextureRegion blueSelectImage;
     private static TextureRegion greenSelectImage;
     private static TextureRegion purpleSelectImage;
@@ -44,27 +46,31 @@ public class Assets {
                 UNIT_LENGTH);
         orangeImage = new TextureRegion(unitsMap, UNIT_WIDTH * 2, 0,
                 UNIT_WIDTH, UNIT_LENGTH);
-        blueImage = new TextureRegion(unitsMap, UNIT_WIDTH * 3, 0, UNIT_WIDTH,
-                UNIT_LENGTH);
+        yellowImage = new TextureRegion(unitsMap, UNIT_WIDTH * 3, 0,
+                UNIT_WIDTH, UNIT_LENGTH);
         greenImage = new TextureRegion(unitsMap, UNIT_WIDTH * 4, 0, UNIT_WIDTH,
                 UNIT_LENGTH);
-        purpleImage = new TextureRegion(unitsMap, UNIT_WIDTH * 5, 0,
+        blueImage = new TextureRegion(unitsMap, UNIT_WIDTH * 5, 0, UNIT_WIDTH,
+                UNIT_LENGTH);
+        purpleImage = new TextureRegion(unitsMap, UNIT_WIDTH * 6, 0,
                 UNIT_WIDTH, UNIT_LENGTH);
-        unselectedTextures = new TextureRegion[] {blankImage, redImage, orangeImage,
-                blueImage, greenImage, purpleImage };
+        unselectedTextures = new TextureRegion[] { blankImage, redImage,
+                orangeImage, yellowImage, greenImage, blueImage, purpleImage };
         redSelectImage = new TextureRegion(unitsMap, UNIT_WIDTH * 1,
                 UNIT_LENGTH, UNIT_WIDTH, UNIT_LENGTH);
         orangeSelectImage = new TextureRegion(unitsMap, UNIT_WIDTH * 2,
                 UNIT_LENGTH, UNIT_WIDTH, UNIT_LENGTH);
-        blueSelectImage = new TextureRegion(unitsMap, UNIT_WIDTH * 3,
+        yellowSelectImage = new TextureRegion(unitsMap, UNIT_WIDTH * 3,
                 UNIT_LENGTH, UNIT_WIDTH, UNIT_LENGTH);
         greenSelectImage = new TextureRegion(unitsMap, UNIT_WIDTH * 4,
                 UNIT_LENGTH, UNIT_WIDTH, UNIT_LENGTH);
-        purpleSelectImage = new TextureRegion(unitsMap, UNIT_WIDTH * 5,
+        blueSelectImage = new TextureRegion(unitsMap, UNIT_WIDTH * 5,
                 UNIT_LENGTH, UNIT_WIDTH, UNIT_LENGTH);
-        selectedTextures = new TextureRegion[] {blankImage, redSelectImage,
-                orangeSelectImage, blueSelectImage, greenSelectImage,
-                purpleSelectImage };
+        purpleSelectImage = new TextureRegion(unitsMap, UNIT_WIDTH * 6,
+                UNIT_LENGTH, UNIT_WIDTH, UNIT_LENGTH);
+        selectedTextures = new TextureRegion[] { blankImage, redSelectImage,
+                orangeSelectImage, yellowSelectImage, greenSelectImage,
+                blueSelectImage, purpleSelectImage };
         music = Gdx.audio.newMusic(Gdx.files.internal("morelegalmusic.mp3"));
         music.setLooping(true);
         music.setVolume(0.5f);
