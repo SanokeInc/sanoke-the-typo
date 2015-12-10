@@ -1,7 +1,5 @@
 package sanoke.qx;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 
@@ -22,13 +20,10 @@ public class Board {
 	
 	private Array<Array<Unit>> columns;
 	// private Array<Unit> matchingUnits;
-	private Sound clearSound;
 	private int points;
 	private int[][] pointGraph;
 
 	public Board() {
-		clearSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));
-		// matchingUnits = new Array<Unit>();
 		columns = new Array<Array<Unit>>(NUM_COLS);
 		
 		// initialize the units
@@ -174,7 +169,7 @@ public class Board {
 			}
 		}
 		if (removeMatches()) {
-			clearSound.play();
+		    Assets.playSound();
 			pullDown();
 		}
 	}
