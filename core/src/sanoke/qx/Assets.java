@@ -12,6 +12,7 @@ public class Assets {
     
     public static Texture background;
     public static Texture boardImage;
+    public static Texture gameOver;
     
     private static Texture unitsMap;
     
@@ -39,6 +40,7 @@ public class Assets {
     public static void loadAssets() {
         background = new Texture(Gdx.files.internal("morelegalphoto.jpg"));
         boardImage = new Texture(Gdx.files.internal("board.png"));
+        gameOver = new Texture(Gdx.files.internal("gameover.png"));
         unitsMap = new Texture(Gdx.files.internal("units.png"));
         blankImage = new TextureRegion(unitsMap, 0, 0, UNIT_WIDTH,
                 UNIT_LENGTH);
