@@ -9,13 +9,13 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class Assets {
     public static final int UNIT_LENGTH = 64;
     public static final int UNIT_WIDTH = 64;
-    
+
     public static Texture background;
     public static Texture boardImage;
     public static Texture gameOver;
-    
+
     private static Texture unitsMap;
-    
+
     private static TextureRegion blankImage;
     private static TextureRegion redImage;
     private static TextureRegion orangeImage;
@@ -24,26 +24,25 @@ public class Assets {
     private static TextureRegion greenImage;
     private static TextureRegion purpleImage;
     public static TextureRegion[] unselectedTextures;
-    
+
     private static TextureRegion redSelectImage;
     private static TextureRegion orangeSelectImage;
     private static TextureRegion yellowSelectImage;
     private static TextureRegion blueSelectImage;
     private static TextureRegion greenSelectImage;
     private static TextureRegion purpleSelectImage;
-    
+
     public static TextureRegion[] selectedTextures;
-    
+
     private static Music music;
     private static Sound clearSound;
-    
+
     public static void loadAssets() {
         background = new Texture(Gdx.files.internal("morelegalphoto.jpg"));
         boardImage = new Texture(Gdx.files.internal("board.png"));
         gameOver = new Texture(Gdx.files.internal("gameover.png"));
         unitsMap = new Texture(Gdx.files.internal("units.png"));
-        blankImage = new TextureRegion(unitsMap, 0, 0, UNIT_WIDTH,
-                UNIT_LENGTH);
+        blankImage = new TextureRegion(unitsMap, 0, 0, UNIT_WIDTH, UNIT_LENGTH);
         redImage = new TextureRegion(unitsMap, UNIT_WIDTH * 1, 0, UNIT_WIDTH,
                 UNIT_LENGTH);
         orangeImage = new TextureRegion(unitsMap, UNIT_WIDTH * 2, 0,
@@ -78,11 +77,11 @@ public class Assets {
         music.setVolume(0.5f);
         clearSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));
     }
-    
+
     public static void playMusic() {
         music.play();
     }
-    
+
     public static void playSound() {
         clearSound.play();
     }
