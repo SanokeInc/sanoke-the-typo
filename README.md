@@ -6,9 +6,3 @@ The core game of **Sanoke** consists of 5 main components, `Sanoke`, `Assets`, `
 
 ## Component Interaction
 ![image](https://cloud.githubusercontent.com/assets/12347266/11660041/292b0e4e-9e06-11e5-9e8d-aac3593df0dc.png)
-
-
-## To Do (Nice to Have)
-* Falling down 'animation' 
-* Slow Combo matches
-* Change to legal photo & music
