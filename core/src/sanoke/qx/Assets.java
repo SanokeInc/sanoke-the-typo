@@ -31,7 +31,6 @@ public class Assets {
     private static TextureRegion blueSelectImage;
     private static TextureRegion greenSelectImage;
     private static TextureRegion purpleSelectImage;
-
     public static TextureRegion[] selectedTextures;
 
     private static Music music;
