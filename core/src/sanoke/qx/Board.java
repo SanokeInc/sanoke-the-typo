@@ -19,7 +19,6 @@ public class Board {
     public static final int POINTS_MATCH_MANY = 10;
 
     public static final int MINIMUM_NUM_TYPE = 1;
-    public static final int NUMBER_OF_UNIT_TYPES = 6;
 
     public static final int INITIAL_CONNECTED_POINTS = 1;
     public static final int PARAM_ADJACENT = 1;
@@ -27,6 +26,8 @@ public class Board {
 
     public static final int PARAM_NO_REPLACEMENT = -1;
     public static final int PARAM_TOPMOST_ROW = NUM_ROWS - 1;
+    
+    public static final int POINTS_TO_ADV_LVL = 300;
 
     private boolean isReadyToSwap;
     private Unit selectedUnit;
@@ -37,11 +38,14 @@ public class Board {
 
     private int points;
     private int[][] pointGraph;
+    
+    private Level level;
 
     public Board() {
         isReadyToSwap = false;
         columns = new Array<Array<Unit>>(NUM_COLS);
         fallingUnits = new Array<Unit>(NUM_ROWS * NUM_COLS);
+        level = new Level();
 
         initializeUnits();
         updateBoard();
@@ -49,6 +53,14 @@ public class Board {
 
     public int getPoints() {
         return points;
+    }
+    
+    public int getLevel() {
+    	if (points > POINTS_TO_ADV_LVL) {
+    		level.increaseLevel();
+    		points = 0;
+    	}
+    	return level.getLevel();
     }
 
     public Array<Unit> getFallingUnits() {
@@ -112,7 +124,7 @@ public class Board {
     }
 
     private int generateRandomUnitType() {
-        return MathUtils.random(MINIMUM_NUM_TYPE, NUMBER_OF_UNIT_TYPES);
+        return MathUtils.random(MINIMUM_NUM_TYPE, level.getNumTypes());
     }
 
     // swaps units if they are neighbours, else de-select old unit

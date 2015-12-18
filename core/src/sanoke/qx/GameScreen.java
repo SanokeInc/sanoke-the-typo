@@ -18,6 +18,8 @@ public class GameScreen implements Screen {
     private static final int BOARD_X_OFFSET = 300;
     private static final int SCORE_X_OFFSET = 5;
     private static final int SCORE_Y_OFFSET = 30;
+    private static final int LEVEL_X_OFFSET = 5;
+    private static final int LEVEL_Y_OFFSET = 780;
     private static final int FALL_RATE = 3;
 
     private static final int POINTS_TO_LOSE = -10;
@@ -50,6 +52,8 @@ public class GameScreen implements Screen {
         game.batch.draw(Assets.boardImage, BOARD_X_OFFSET, BOARD_Y_OFFSET);
         game.font.draw(game.batch, "Score: " + board.getPoints(),
                 SCORE_X_OFFSET, SCORE_Y_OFFSET);
+        game.font.draw(game.batch, "Level: " + board.getLevel(),
+        		LEVEL_X_OFFSET, LEVEL_Y_OFFSET);
         updateUnitsPosition(delta);
         drawUnits();
         if (board.getPoints() <= POINTS_TO_LOSE) {
